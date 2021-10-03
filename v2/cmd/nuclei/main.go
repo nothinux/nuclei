@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/projectdiscovery/goflags"
 	"github.com/projectdiscovery/gologger"
@@ -38,6 +39,7 @@ func main() {
 func readConfig() {
 	home, _ := os.UserHomeDir()
 	templatesDirectory := filepath.Join(home, "nuclei-templates")
+	defaultOutput := fmt.Sprintf("nuclei-output-%s.txt", time.Now().Format("20060102150405"))
 
 	flagSet := goflags.NewFlagSet()
 	flagSet.SetDescription(`Nuclei is a fast, template based vulnerability scanner focusing
@@ -75,7 +77,7 @@ on extensive configurability, massive extensibility and ease of use.`)
 	)
 
 	createGroup(flagSet, "output", "Output",
-		flagSet.StringVarP(&options.Output, "output", "o", "", "output file to write found issues/vulnerabilities"),
+		flagSet.StringVarP(&options.Output, "output", "o", defaultOutput, "output file to write found issues/vulnerabilities"),
 
 		flagSet.BoolVar(&options.Silent, "silent", false, "display findings only"),
 		flagSet.BoolVarP(&options.Verbose, "verbose", "v", false, "show verbose output"),
